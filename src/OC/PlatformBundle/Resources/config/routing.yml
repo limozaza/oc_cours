@@ -6,14 +6,14 @@ oc_platform_home:
         _controller: OCPlatformBundle:Advert:index
         page:        1
     requirements:
-        page: \d*
+        page: \d* #0,1,++
 
 oc_platform_view:
     path:      /advert/{id}
     defaults:
         _controller: OCPlatformBundle:Advert:view
     requirements:
-        id: \d+
+        id: \d+ #1,++
 
 oc_platform_add:
     path:      /add
@@ -33,4 +33,3 @@ oc_platform_delete:
         _controller: OCPlatformBundle:Advert:delete
     requirements:
         id: \d+
-l
