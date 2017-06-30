@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AdvertController extends Controller
 {
-    public function indexAction()
+    public function indexAction($page)
     {
         $content = $this->get('templating')->render('OCPlatformBundle:Advert:index.html.twig',['name' => "Boufares"]);
         return new Response($content);
