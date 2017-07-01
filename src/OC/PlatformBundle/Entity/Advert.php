@@ -53,6 +53,11 @@ class Advert
      * @ORM\Column(name="published", type="boolean")
      */
     private $published = true;
+
+    /**
+     * @ORM\OneToOne(targetEntity="OC\PlatformBundle\Entity\Image",cascade={"persist"})
+     */
+    private $image;
     
 
     public function __construct()
@@ -189,5 +194,21 @@ class Advert
     public function getPublished()
     {
         return $this->published;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
+     * @param mixed $image
+     */
+    public function setImage(Image $image=null)
+    {
+        $this->image = $image;
     }
 }
