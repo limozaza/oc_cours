@@ -10,4 +10,46 @@ namespace OC\PlatformBundle\Repository;
  */
 class AdvertRepository extends \Doctrine\ORM\EntityRepository
 {
+
+    // find all
+    public function myFindAll(){
+        $queryBuilder = $this->_em->createQueryBuilder('a');
+        $query = $queryBuilder->getQuery();
+        $results = $query->getResult();
+        return $results;
+    }
+    // find one by id
+    public function myFindOne($id){
+        $queryBuilder = $this->createQueryBuilder('a')
+                        ->where('a.id = :id')
+                        ->setParameter('id',$id);
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+    // find by author and date
+    public function findByAuthorAndDate($author, $year){
+        $queryBuilder = $this->createQueryBuilder('a');
+        $queryBuilder->where('a.author = :author')
+            ->setParameter('author', $author)
+            ->andWhere('a.date < :year')
+            ->setParameter('year',$year)
+            ->orderBy('a.date','DESC');
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+    //find all DQL
+    public function myFindAllDQL(){
+        $query = $this->_em->createQuery('SELECT a FROM OCPlatformBundle:Advert a');
+        $results = $query->getResult();
+        return $results;
+    }
+    // find one by id DQL
+    public function myFindDQL($id){
+        $query = $this->_em->createQuery('SELECT a FROM OCPlatformBundle:Advert a WHERE a.id = :id');
+        $query->setParameter('id',$id);
+        return $query->getSingleResult();
+    }
+
+    //Les jointures
+    
 }
