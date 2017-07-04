@@ -2,6 +2,8 @@
 
 namespace OC\PlatformBundle\Controller;
 
+use OC\PlatformBundle\Entity\Advert;
+use OC\PlatformBundle\Entity\AdvertSkill;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -50,16 +52,27 @@ class AdvertController extends Controller
 
     public function viewAction($id)
     {
-        $advert = array(
-            'title'   => 'Recherche développpeur Symfony2',
-            'id'      => $id,
-            'author'  => 'Alexandre',
-            'content' => 'Nous recherchons un développeur Symfony2 débutant sur Lyon. Blabla…',
-            'date'    => new \Datetime()
-        );
+
+        $em = $this->getDoctrine()->getManager();
+        //Advert
+        $advert = $em->getRepository('OCPlatformBundle:Advert')->find($id);
+
+        if(null === $advert){
+            throw new NotFoundHttpException("L'annonce d'id $id n'existe pas");
+        }
+
+        $listApplications = $em->getRepository("OCPlatformBundle:Application")
+            ->findBy(['advert'=>$advert]);
+
+
+        $listAdvertSkills = $em->getRepository('OCPlatformBundle:AdvertSkill')
+            ->findBy(['advert'=>$advert]);
+
 
         return $this->render('OCPlatformBundle:Advert:view.html.twig', array(
-            'advert' => $advert
+            'advert' => $advert,
+            'listApplications'=>$listApplications,
+            'listAdvertSkills'=>$listAdvertSkills
         ));
     }
 
@@ -83,6 +96,29 @@ class AdvertController extends Controller
         if($antispam->isSpam($text)){
             throw new \Exception('Votre message a été détecté comme spam !');
         }
+
+        //Exepmle
+        $advert = new Advert();
+        $advert->setTitle('Recherche développeur Symfony.');
+        $advert->setAuthor('Limozaza');
+        $advert->setContent('Nous recherchons un bon dev Symfony salaire 66000€ ...');
+
+
+        $em = $this->getDoctrine()->getManager();
+        //On recupere toutes les competences
+        $listSkills = $em->getRepository('OCPlatformBundle:Skill')->findAll();
+
+        foreach ($listSkills as $skill){
+            $advertSkill = new AdvertSkill();
+            $advertSkill->setAdvert($advert);
+            $advertSkill->setSkill($skill);
+            $advertSkill->setLevel('Expert');
+
+            $em->persist($advertSkill);
+        }
+        $em->persist($advert);
+
+        $em->flush();
 
         // Si on n'est pas en POST, alors on affiche le formulaire
         return $this->render('OCPlatformBundle:Advert:add.html.twig');

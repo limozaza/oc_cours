@@ -3,4 +3,4 @@ parameters:
 services:
     oc_platform.antispam:
         class: OC\PlatformBundle\Antispam\OCAntispam
-        arguments: ["@mailer", 20 , "%locale%"]
+        arguments: ["@mailer", 5 , "%locale%"]
