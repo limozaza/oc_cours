@@ -51,5 +51,11 @@ class AdvertRepository extends \Doctrine\ORM\EntityRepository
     }
 
     //Les jointures
-    
+    public function getAdvertWithApplications(){
+        $queryBuilder = $this->createQueryBuilder('a')
+            ->leftJoin('a.applications','app')
+            ->addSelect('app');
+        return $queryBuilder->getQuery()->getResult();
+    }
+
 }
