@@ -4,3 +4,13 @@ services:
     oc_platform.antispam:
         class: OC\PlatformBundle\Antispam\OCAntispam
         arguments: ["@mailer", 5 , "%locale%"]
+    oc_platform.email.application_mailer:
+        class: OC\PlatformBundle\Email\ApplicationMailer
+        arguments:
+            - "@mailer"
+    oc_platform.doctrine_listener.application_mailer:
+        class: OC\PlatformBundle\DoctrineListener\ApplicationCreationListener
+        arguments:
+            - "@oc_platform.email.application_mailer"
+        tags:
+            - { name: doctrine.event_listener, event: postPersist }
