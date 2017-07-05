@@ -11,6 +11,16 @@ namespace OC\PlatformBundle\Repository;
 class AdvertRepository extends \Doctrine\ORM\EntityRepository
 {
 
+    //Pour L'application
+    public function getAdvertWithCategories(array $categorieNames){
+        $qb = $this->createQueryBuilder('a');
+        $qb->innerJoin('a.categories','c')
+            ->addSelect('c');
+        $qb->where($qb->expr()->in('c.name',$categorieNames));
+        return $qb->getQuery()->getResult();
+
+    }
+
     // find all
     public function myFindAll(){
         $queryBuilder = $this->_em->createQueryBuilder('a');
