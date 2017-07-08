@@ -21,6 +21,18 @@ class AdvertRepository extends \Doctrine\ORM\EntityRepository
 
     }
 
+    public function getAdverts(){
+        $qb = $this->createQueryBuilder('a')
+            ->leftJoin('a.image','i')
+            ->addSelect('i')
+            ->leftJoin('a.categories','c')
+            ->addSelect('c')
+            ->orderBy('a.date','DESC')
+            ;
+
+        return $qb->getQuery()->getResult();
+    }
+
     // find all
     public function myFindAll(){
         $queryBuilder = $this->_em->createQueryBuilder('a');

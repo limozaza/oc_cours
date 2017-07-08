@@ -17,7 +17,7 @@ class AdvertController extends Controller
             throw new NotFoundHttpException('Page "'.$page.'" inexistante.');
         }
 
-        $listAdverts = $this->getDoctrine()->getManager()->getRepository('OCPlatformBundle:Advert')->findAll();
+        $listAdverts = $this->getDoctrine()->getManager()->getRepository('OCPlatformBundle:Advert')->getAdverts();
 
         // Mais pour l'instant, on ne fait qu'appeler le template
         return $this->render('OCPlatformBundle:Advert:index.html.twig', array(
