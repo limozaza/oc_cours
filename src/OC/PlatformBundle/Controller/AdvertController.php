@@ -16,12 +16,27 @@ class AdvertController extends Controller
         if ($page < 1) {
             throw new NotFoundHttpException('Page "'.$page.'" inexistante.');
         }
+        $nbPerPage = 2;
+        $listAdverts = $this->getDoctrine()
+                        ->getManager()
+                        ->getRepository('OCPlatformBundle:Advert')
+                        ->getAdverts($page, $nbPerPage);
 
-        $listAdverts = $this->getDoctrine()->getManager()->getRepository('OCPlatformBundle:Advert')->getAdverts();
+        $nbPages = ceil(count($listAdverts) / $nbPerPage);
+
+        // Si la page n'existe pas, on retourne une 404
+        if ($page > $nbPages) {
+            throw $this->createNotFoundException("La page ".$page." n'existe pas.");
+        }
+
+        $listAdverts = $listAdverts->getQuery()->getResult();
+
 
         // Mais pour l'instant, on ne fait qu'appeler le template
         return $this->render('OCPlatformBundle:Advert:index.html.twig', array(
-            'listAdverts' => $listAdverts
+            'listAdverts' => $listAdverts,
+            'nbPages'     => $nbPages,
+            'page'        => $page,
         ));
     }
 
