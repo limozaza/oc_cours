@@ -136,4 +136,11 @@ class AdvertController extends Controller
             'listAdverts' => $listAdverts
         ));
     }
+
+
+    public function purge($days, Request $request){
+        $purge = $this->get('oc_platform.purger.advert');
+        $purge->purge($days);
+        return $this->redirectToRoute('oc_platform_home');
+    }
 }

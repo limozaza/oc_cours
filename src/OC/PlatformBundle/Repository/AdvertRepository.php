@@ -1,7 +1,7 @@
 <?php
 
 namespace OC\PlatformBundle\Repository;
-use Doctrine\ORM\Tools\Pagination\Paginator;
+use \Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * AdvertRepository
@@ -11,6 +11,8 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
  */
 class AdvertRepository extends \Doctrine\ORM\EntityRepository
 {
+
+
 
     //Pour L'application
     public function getAdvertWithCategories(array $categorieNames){
@@ -40,6 +42,17 @@ class AdvertRepository extends \Doctrine\ORM\EntityRepository
         // Enfin, on retourne l'objet Paginator correspondant à la requête construite
         // (n'oubliez pas le use correspondant en début de fichier)
         return new Paginator($query, true);
+    }
+
+    //La purge des annances non consulter
+    public function getAdvertsNonConsulter(\DateTime $date){
+        $qb = $this->createQueryBuilder('a')
+            ->where('a.updateAt <= :date')
+            ->orWhere('a.updateAt IS NULL AND a.date <= :date')
+            ->andWhere('a.applications IS EMPTY')
+            ->setParameter('date', $date);
+
+        return $qb->getQuery()->getResult();
     }
 
     // find all
