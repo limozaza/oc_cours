@@ -103,6 +103,7 @@ class AdvertController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $advert = $em->getRepository('OCPlatformBundle:Advert')->find($id);
+        $form = $this->createForm(AdvertType::class,$advert);
 
         if(null === $advert){
             throw new NotFoundHttpException("L'annonce d'id $id n'existe pas.");
@@ -111,14 +112,15 @@ class AdvertController extends Controller
         // Même mécanisme que pour l'ajout
         if ($request->isMethod('POST')) {
             $request->getSession()->getFlashBag()->add('notice', 'Annonce bien modifiée.');
-
+            $em->flush();
             return $this->redirectToRoute('oc_platform_view', array('id' => $advert->getId()));
         }
 
 
 
         return $this->render('OCPlatformBundle:Advert:edit.html.twig', array(
-            'advert' => $advert
+            'advert' => $advert,
+            'form' => $form->createView()
         ));
 
     }

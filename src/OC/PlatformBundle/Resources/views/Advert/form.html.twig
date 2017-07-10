@@ -14,8 +14,9 @@
         {{ form_errors(form.date) }}
 
         <div class="col-sm-10">
-            {# Génération de l'input. #}
+            {% if form.date is defined %}
             {{ form_widget(form.date) }}
+            {% endif %}
         </div>
     </div>
 
