@@ -28,6 +28,7 @@ class AdvertType extends AbstractType
                     'required'=>false
                 ]
             )
+            ->add('image', ImageType::class)
             ->add('save', SubmitType::class);
     }
     
