@@ -2,9 +2,10 @@
 
 namespace OC\PlatformBundle\Form;
 
+use OC\PlatformBundle\Repository\CategoryRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -19,6 +20,10 @@ class AdvertType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+
+
+        $pattern = 'D%';
+
         $builder
             ->add('date', DateTimeType::class)
             ->add('title', TextType::class)
@@ -30,10 +35,14 @@ class AdvertType extends AbstractType
                 ]
             )
             ->add('image', ImageType::class)
-            ->add('categories', CollectionType::class,[
-                'entry_type'=>CategoryType::class,
-                'allow_add'=>true,
-                'allow_delete'=>true
+            ->add('categories',EntityType::class, [
+                'class' => 'OC\PlatformBundle\Entity\Category',
+                'choice_label' => 'name',
+                'multiple'=> true,
+                'expanded' => true,
+                'query_builder'=> function(CategoryRepository $repository) use ($pattern){
+                    return $repository->getLikeQueryBuilder($pattern);
+                }
             ])
             ->add('save', SubmitType::class);
     }
