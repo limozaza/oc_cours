@@ -4,6 +4,7 @@ namespace OC\PlatformBundle\Controller;
 
 use OC\PlatformBundle\Entity\Advert;
 use OC\PlatformBundle\Entity\AdvertSkill;
+use OC\PlatformBundle\Form\AdvertType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -77,21 +78,8 @@ class AdvertController extends Controller
 
         // La gestion d'un formulaire est particulière, mais l'idée est la suivante :
         $advert = new Advert();
-        $advert->setDate(new \DateTime());
-        $formBuilder = $this->get('form.factory')->createBuilder(FormType::class, $advert);
 
-        $formBuilder
-            ->add('date',DateType::class)
-            ->add('title',TextType::class)
-            ->add('content',TextareaType::class)
-            ->add('author',TextType::class)
-            ->add('published',CheckboxType::class,[
-                'required'=> false
-            ])
-            ->add('save',SubmitType::class);
-
-        $form = $formBuilder->getForm();
-
+        $form = $this->createForm(AdvertType::class,$advert);
 
         if ($request->isMethod('POST')) {
 
