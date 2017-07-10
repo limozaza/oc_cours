@@ -77,6 +77,7 @@ class AdvertController extends Controller
 
         // La gestion d'un formulaire est particulière, mais l'idée est la suivante :
         $advert = new Advert();
+        $advert->setDate(new \DateTime());
         $formBuilder = $this->get('form.factory')->createBuilder(FormType::class, $advert);
 
         $formBuilder
