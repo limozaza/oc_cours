@@ -85,7 +85,6 @@ class AdvertController extends Controller
 
             $form->handleRequest($request);
             if($form->isValid()){
-                $advert->getImage()->upload();
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($advert);
                 $em->flush();
@@ -134,12 +133,15 @@ class AdvertController extends Controller
             throw new NotFoundHttpException("L'annonce d'id $id n'existe pas.");
         }
 
+
         foreach ($advert->getCategories() as $category){
             $advert->removeCategory($category);
         }
+        $em->remove($advert);
         $em->flush();
 
-        return $this->render('OCPlatformBundle:Advert:delete.html.twig');
+        return $this->redirectToRoute('oc_platform_home');
+        //return $this->render('OCPlatformBundle:Advert:delete.html.twig');
     }
 
 
