@@ -37,7 +37,9 @@ class AdvertType extends AbstractType
                     'required'=>false
                 ]
             )
-            ->add('image', ImageType::class)
+            ->add('image', ImageType::class,[
+                'required'=>false
+            ])
             ->add('categories',EntityType::class, [
                 'class' => 'OC\PlatformBundle\Entity\Category',
                 'choice_label' => 'name',

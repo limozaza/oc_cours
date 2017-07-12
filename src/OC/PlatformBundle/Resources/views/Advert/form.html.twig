@@ -26,11 +26,12 @@
         {{ form_label(form.title, "Titre de l'annonce", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
 
         {# Affichage des erreurs pour ce champ précis. #}
-        {{ form_errors(form.title) }}
+
 
         <div class="col-sm-10">
             {# Génération de l'input. #}
             {{ form_widget(form.title, {'attr': {'class': 'form-control'}}) }}
+
         </div>
     </div>
 
