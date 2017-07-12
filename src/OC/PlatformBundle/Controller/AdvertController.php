@@ -168,4 +168,25 @@ class AdvertController extends Controller
         $purge->purge($days);
         return $this->redirectToRoute('oc_platform_home');
     }
+
+
+
+    public function testAction(){
+        $advert =new Advert();
+        $advert->setDate(new \DateTime());
+        $advert->setTitle('zaza');
+        $advert->setAuthor('auteur');
+
+
+        $listErrors = $this->get('validator')->validate($advert);
+
+        // Si $listErrors n'est pas vide, on affiche les erreurs
+        if(count($listErrors) > 0) {
+            // $listErrors est un objet, sa méthode __toString permet de lister joliement les erreurs
+            return new Response((string) $listErrors);
+        } else {
+            return new Response("L'annonce est valide !");
+        }
+
+    }
 }
