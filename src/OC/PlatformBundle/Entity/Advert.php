@@ -5,6 +5,7 @@ namespace OC\PlatformBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use OC\PlatformBundle\Validator\Antiflood;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -57,6 +58,7 @@ class Advert
      *
      * @ORM\Column(name="content", type="text")
      * @Assert\NotBlank()
+     * @Antiflood()
      */
     private $content;
 
