@@ -6,14 +6,6 @@ oc_platform:
     prefix:   /platform
 
 
-login:
-    path: /login
-    defaults:
-        _controller: OCUserBundle:Security:login
-
-login_check:
-    path: /login_check
-
-logout:
-    path: /logout
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
 
