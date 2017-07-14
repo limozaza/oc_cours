@@ -9,3 +9,8 @@ oc_platform:
 fos_user:
     resource: "@FOSUserBundle/Resources/config/routing/all.xml"
 
+fos_user_zaza:
+    path: /connexion
+    defaults:
+        _controller: FOSUserBundle:Security:login
+
